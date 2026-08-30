@@ -150,6 +150,13 @@ class SchoolStudentLeave(models.Model):
 
     @api.constrains("state", "student_id")
     def _check_student_state_allowed(self):
+        """Validate the student's state whenever it or ours changes.
+
+        Raises ``ValidationError`` (via
+        ``_check_student_state_allowed_condition``) when this leave is
+        ``confirm``/``done`` but the linked ``student_id`` is not in
+        the ``enrol`` state.
+        """
         for record in self.sudo():
             if not record._check_student_state_allowed_condition():
                 error_message = (
@@ -171,6 +178,13 @@ confirmed or completed
                 raise ValidationError(error_message)
 
     def _check_student_state_allowed_condition(self):
+        """Return whether ``student_id``'s state allows this state.
+
+        Only ``confirm``/``done`` require the student to be
+        ``enrol``; any other state on this record is always allowed.
+
+        :return: ``True`` when allowed, ``False`` otherwise
+        """
         self.ensure_one()
         if self.state not in ("confirm", "done"):
             return True
@@ -178,6 +192,13 @@ confirmed or completed
 
     @api.constrains("state", "student_id")
     def _check_single_active_leave(self):
+        """Validate that a student has at most one active leave.
+
+        Raises ``ValidationError`` (via
+        ``_check_single_active_leave_condition``) when another
+        ``draft``/``confirm`` leave already exists for the same
+        ``student_id``.
+        """
         for record in self.sudo():
             if not record._check_single_active_leave_condition():
                 error_message = (
@@ -200,6 +221,16 @@ confirming this one
                 raise ValidationError(error_message)
 
     def _check_single_active_leave_condition(self):
+        """Return whether this record is the only active leave.
+
+        Only ``draft``/``confirm`` records with a ``student_id`` are
+        checked; other states are always allowed. Uses
+        ``_get_single_active_leave_criteria`` to search for another
+        active leave of the same student.
+
+        :return: ``True`` when allowed, ``False`` if a duplicate
+            active leave exists
+        """
         self.ensure_one()
         if self.state not in ("draft", "confirm") or not self.student_id:
             return True
@@ -209,6 +240,14 @@ confirming this one
         return not duplicate
 
     def _get_single_active_leave_criteria(self):
+        """Build the search domain for another active leave.
+
+        Matches ``draft``/``confirm`` leaves of the same
+        ``student_id``, excluding this record. Extension point:
+        override to widen or narrow what counts as "active".
+
+        :return: search domain (list of tuples)
+        """
         self.ensure_one()
         return [
             ("id", "!=", self.id),
@@ -218,10 +257,21 @@ confirming this one
 
     @ssi_decorator.pre_done_check()
     def _10_check_ready(self):
+        """Run pre-``done`` checks before this leave is completed.
+
+        Called by ``mixin.transaction_done`` prior to the ``done``
+        transition; delegates to ``_check_done_student_enrol``.
+        """
         self.ensure_one()
         self._check_done_student_enrol()
 
     def _check_done_student_enrol(self):
+        """Ensure the student is still enrolled before completion.
+
+        Raises ``UserError`` when ``student_id`` is no longer in the
+        ``enrol`` state, since the leave can only be completed while
+        the student stays enrolled throughout the leave period.
+        """
         self.ensure_one()
         if self.student_id.state != "enrol":
             error_message = (
@@ -243,14 +293,32 @@ the leave is completed
 
     @ssi_decorator.post_done_action()
     def _20_apply_leave(self):
+        """Put the student on leave once this document is ``done``.
+
+        Called by ``mixin.transaction_done`` right after the
+        ``done`` transition. Side effect: calls
+        ``action_set_to_on_leave`` on ``student_id`` (as sudo).
+        """
         self.ensure_one()
         self.student_id.sudo().action_set_to_on_leave()
 
     def action_return(self):
+        """Re-enroll the students of these leave documents.
+
+        Called from the "Return" button; delegates to ``_return``
+        for each record. Not part of the approval workflow: it acts
+        directly regardless of the document's own state.
+        """
         for record in self.sudo():
             record._return()  # pylint: disable=protected-access
 
     def _return(self):
+        """Re-enroll the student linked to this leave document.
+
+        Raises ``UserError`` when ``student_id`` is not currently
+        ``on_leave``. Side effect: calls ``action_set_to_enroll`` on
+        ``student_id`` (as sudo).
+        """
         self.ensure_one()
         if self.student_id.state != "on_leave":
             error_message = (
