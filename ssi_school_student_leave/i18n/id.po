@@ -259,7 +259,7 @@ msgstr "Mitra Perusahaan"
 #. module: ssi_school_student_leave
 #: model:res.groups,name:ssi_school_student_leave.school_student_leave_company_child_group
 msgid "Company and All Child Companies"
-msgstr "Perusahaan dan Semua Perusahaan Turunan"
+msgstr "Perusahaan dan Semua Anak Perusahaan"
 
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,help:ssi_school_student_leave.field_school_student_leave__company_id
@@ -271,8 +271,8 @@ msgid ""
 msgstr ""
 "Perusahaan pemilik dokumen\n"
 "\n"
-"* Terisi otomatis dengan perusahaan pengguna.\n"
-"  Perusahaan bawaan dapat diubah"
+"* Otomatis diisi dengan perusahaan pengguna.\n"
+"  Perusahaan default dapat diubah"
 
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,help:ssi_school_student_leave.field_school_student_leave__confirm_ok
@@ -344,12 +344,12 @@ msgstr "Pengikut (Mitra)"
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,help:ssi_school_student_leave.field_school_student_leave__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "Ikon Font Awesome, mis. fa-tasks"
+msgstr "Ikon Font Awesome, misalnya fa-tasks"
 
 #. module: ssi_school_student_leave
 #: model_terms:ir.ui.view,arch_db:ssi_school_student_leave.school_student_leave_view_search
 msgid "Group By"
-msgstr "Kelompokkan Menurut"
+msgstr "Kelompokkan Berdasarkan"
 
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,field_description:ssi_school_student_leave.field_school_student_leave__id
@@ -414,7 +414,7 @@ msgid ""
 "\n"
 "* If active user can edit document number"
 msgstr ""
-"Kebijakan penetapan nomor manual\n"
+"Kebijakan penomoran manual\n"
 "\n"
 "* Jika aktif, pengguna dapat mengubah nomor dokumen"
 
@@ -471,7 +471,7 @@ msgstr "Jumlah Tindakan"
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,field_description:ssi_school_student_leave.field_school_student_leave__message_has_error_counter
 msgid "Number of errors"
-msgstr "Jumlah kesalahan"
+msgstr "Jumlah galat"
 
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,help:ssi_school_student_leave.field_school_student_leave__message_needaction_counter
@@ -577,9 +577,9 @@ msgid ""
 "Planned: Future activities."
 msgstr ""
 "Status berdasarkan aktivitas\n"
-"Terlambat: Tenggat sudah lewat\n"
-"Hari ini: Tanggal aktivitas adalah hari ini\n"
-"Direncanakan: Aktivitas mendatang."
+"Terlambat: Batas waktu sudah lewat\n"
+"Hari Ini: Tanggal aktivitas hari ini\n"
+"Terjadwal: Aktivitas mendatang."
 
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,field_description:ssi_school_student_leave.field_school_student_leave__student_id
@@ -645,14 +645,14 @@ msgstr ""
 "* Pengenal unik transaksi\n"
 "* Biarkan '/' untuk menghasilkan nomor secara otomatis\n"
 "* Ubah '/' menjadi nomor/pengenal apa pun untuk menetapkan nomor secara manual.\n"
-"  Penetapan nomor manual dapat dilakukan pada status 'Draf'\n"
+"  Penetapan nomor manual dapat dilakukan dalam status 'Draf'\n"
 "  Hanya pengguna dengan kebijakan 'Dapat Memasukkan Nomor Dokumen Manual' yang dapat menetapkan nomor secara manual.\n"
 "* Transaksi dengan nomor selain '/' tidak dapat dihapus."
 
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,help:ssi_school_student_leave.field_school_student_leave__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "Jenis aktivitas pengecualian pada catatan."
+msgstr "Jenis aktivitas pengecualian yang tercatat."
 
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,field_description:ssi_school_student_leave.field_school_student_leave__message_unread
@@ -681,7 +681,7 @@ msgstr ""
 "Pengguna yang bertanggung jawab atas dokumen\n"
 "\n"
 "* Pengguna pembuat dapat berbeda dengan pengguna penanggung jawab\n"
-"* Terisi otomatis dengan pengguna yang memulai pembuatan dokumen.\n"
+"* Otomatis diisi dengan pengguna yang memulai pembuatan dokumen.\n"
 "  Penanggung jawab bawaan dapat diubah."
 
 #. module: ssi_school_student_leave
@@ -708,7 +708,7 @@ msgstr "Validator"
 #. module: ssi_school_student_leave
 #: model:res.groups,name:ssi_school_student_leave.school_student_leave_viewer_group
 msgid "Viewer"
-msgstr "Pelihat"
+msgstr "Penampil"
 
 #. module: ssi_school_student_leave
 #: model:ir.model.fields,field_description:ssi_school_student_leave.field_school_student_leave__website_message_ids
